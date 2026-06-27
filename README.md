@@ -26,3 +26,7 @@ When you activate it, it arms itself, forks into the background, and returns con
 ---
 ## How It Works
 actionCommit acts differently depending on whether it is running for the first time or being recalled:
+
+<img width="356" height="200" alt="1001468948" src="https://github.com/user-attachments/assets/74a5c14d-b30b-4758-8ee4-602ffbf9e66e" />
+<img width="480" height="480" alt="1001468949" src="https://github.com/user-attachments/assets/a5821eb2-e130-4431-a0e8-55f2ec695755" />
+
