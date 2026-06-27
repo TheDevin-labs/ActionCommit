@@ -1,0 +1,69 @@
+GET "libhdr"
+
+LET start() BE
+$(
+    LET logstream = 0
+    LET ch = 0
+    LET status = 0
+    LET filesize = 0
+    LET proximity = 0
+
+    logstream := findinput("system.log")
+
+    TEST logstream = 0 THEN
+    $(
+        logstream := findoutput("system.log")
+        selectoutput(logstream)
+        
+        writes("*n*e[35m==================================================*e[0m*n")
+        writes("*e[32m       actionCommit : INITIALIZATION MODE         *e[0m*n")
+        writes("*e[35m==================================================*e[0m*n*n")
+        
+        writes("*e[32m[STATUS]*e[0m Core auditor armed. Forking to background...*n*n")
+        
+        $(
+            ch := rdch()
+            IF ch = endstreamch BREAK
+            
+            wrch(ch)
+            status := callos(12, 0)
+            wrch(status)
+        $) REPEAT
+        
+        endwrite()
+    $)
+    ELSE
+    $(
+        selectinput(logstream)
+        
+        writes("*n*e[35m==================================================*e[0m*n")
+        writes("*e[36m         actionCommit : SYSTEM AUDIT LOG          *e[0m*n")
+        writes("*e[35m==================================================*e[0m*n*n")
+        
+        $(
+            ch := rdch()
+            IF ch = endstreamch BREAK
+            status := rdch()
+            filesize := filesize + 2
+            
+            proximity := (status * 100) / 255
+            
+            writes("*e[33m[ENTRY]*e[0m Command Caught: '")
+            wrch(ch)
+            writes("'  ->  *e[31mImpact:*e[0m ")
+            writed(status, 3)
+            
+            writes("  ->  *e[34mProximity:*e[0m ")
+            writed(proximity, 3)
+            writes("%% to Kernel*n*n")
+        $) REPEAT
+        
+        endread()
+        
+        writes("*e[35m--------------------------------------------------*e[0m*n")
+        writes("*e[32m[SUMMARY]*e[0m Total Log Size: ")
+        writed(filesize, 5)
+        writes(" Words Bytes Registered.*n")
+        writes("*e[35m--------------------------------------------------*e[0m*n*n")
+    $)
+$)
